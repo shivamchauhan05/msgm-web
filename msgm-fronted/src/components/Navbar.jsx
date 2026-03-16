@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, GraduationCap, Globe } from 'lucide-react';
+import { Menu, X, Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const Navbar = () => {
@@ -28,9 +28,19 @@ const Navbar = () => {
       <div className="px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo and School Name */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="bg-white p-1 rounded-lg">
-              <GraduationCap size={24} className="text-blue-900" />
+          <Link to="/" className="flex items-center space-x-3">
+            {/* School Logo - Update the src with your actual logo path */}
+            <div className="w-10 h-10 bg-white rounded-lg overflow-hidden flex items-center justify-center shadow-lg">
+              <img 
+                src="LOGO.jfif" // 👈 Yahan apna logo ka path lagayein
+                alt={t('schoolName')}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Agar logo load na ho to fallback icon dikhaye
+                  e.target.style.display = 'none';
+                  e.target.parentElement.innerHTML = '<div class="w-full h-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center"><span class="text-white font-bold text-lg">MSGM</span></div>';
+                }}
+              />
             </div>
             <div className="flex flex-col">
               <span className="font-bold text-sm md:text-base">{t('schoolName')}</span>

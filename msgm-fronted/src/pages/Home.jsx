@@ -34,13 +34,13 @@ const Home = () => {
   // School Photos (Replace with your actual school photos)
   const schoolPhotos = {
     hero: "msgm.jpeg",
-    about1: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    about2: "https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+    about1: "game4.jfif",
+    about2: "game.jfif",
     whyUs: "b7649345-dd48-404d-817f-9bf01e33ffc3.jfif",
     students: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    campus: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    library: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    sports: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+    campus: "game2.jfif",
+    library: "game3.jfif",
+    sports: "game1.jfif"
   };
 
   const achievements = [
