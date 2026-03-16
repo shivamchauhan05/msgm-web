@@ -70,6 +70,12 @@ const resources = {
       "hours": "Hours",
       "copyright": "All rights reserved",
       "affiliation": "Affiliated to U.P. Board",
+      "establishedBy": "Established by",
+      
+      // Founder
+      "founder": "Founder",
+      "founderName": "Arun Acharya",
+      "founderQuote": "Education is the medium through which society can progress.",
       
       // Admission Page
       "admissionForm": "Admission Form",
@@ -88,7 +94,7 @@ const resources = {
       // History Page
       "ourHistory": "Our History",
       "founder": "Founder",
-      "founderName": "Late Shri Mahesh Chandra Gupta",
+      "founderName": "Arun Acharya",
       "founderQuote": "Education is the medium through which society can progress.",
       "timeline": "Timeline",
       "keyMilestones": "Key Milestones",
@@ -192,6 +198,12 @@ const resources = {
       "hours": "समय",
       "copyright": "सर्वाधिकार सुरक्षित",
       "affiliation": "यू.पी. बोर्ड से मान्यता प्राप्त",
+      "establishedBy": "द्वारा स्थापित",
+      
+      // Founder
+      "founder": "संस्थापक",
+      "founderName": "अरुण आचार्य",
+      "founderQuote": "शिक्षा वह माध्यम है जिससे समाज का विकास संभव है।",
       
       // Admission Page
       "admissionForm": "प्रवेश फॉर्म",
@@ -210,7 +222,7 @@ const resources = {
       // History Page
       "ourHistory": "हमारा इतिहास",
       "founder": "संस्थापक",
-      "founderName": "स्वर्गीय श्री महेश चंद्र गुप्ता",
+      "founderName": "अरुण आचार्य",
       "founderQuote": "शिक्षा वह माध्यम है जिससे समाज का विकास संभव है।",
       "timeline": "समयरेखा",
       "keyMilestones": "प्रमुख उपलब्धियां",
@@ -252,7 +264,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'en', // default language
+    lng: 'en',
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false

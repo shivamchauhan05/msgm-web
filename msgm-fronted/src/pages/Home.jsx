@@ -36,7 +36,7 @@ const Home = () => {
     hero: "msgm.jpeg",
     about1: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
     about2: "https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    whyUs: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+    whyUs: "b7649345-dd48-404d-817f-9bf01e33ffc3.jfif",
     students: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
     campus: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
     library: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
@@ -460,11 +460,12 @@ const Home = () => {
               ))}
             </div>
             <div className="relative">
-              <img 
-                src={schoolPhotos.whyUs}
-                alt="Why Choose Us"
-                className="rounded-2xl shadow-2xl w-full h-full object-cover"
-              />
+               <img 
+    src={schoolPhotos.whyUs}
+    alt="Why Choose Us"
+    className="rounded-2xl shadow-2xl w-full h-full object-contain"
+  />
+
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-2xl"></div>
               <div className="absolute bottom-4 left-4 right-4 text-white">
                 <h3 className="text-xl font-bold mb-2">{t('excellenceInEducation')}</h3>
@@ -520,13 +521,13 @@ const Home = () => {
             </div>
             <div className="text-white order-1 md:order-2">
               
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Dr. Rajesh Kumar</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Dr. Arun Acharya</h2>
               <p className="text-base sm:text-lg text-blue-100 leading-relaxed mb-6">
                 {t('principalQuote')}
               </p>
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-0.5 bg-yellow-400"></div>
-                <span className="text-yellow-300 font-semibold text-sm sm:text-base">{t('principal')}, MSGM Inter College</span>
+                <span className="text-yellow-300 font-semibold text-sm sm:text-base">Founder MSGM Inter College</span>
               </div>
             </div>
           </div>
