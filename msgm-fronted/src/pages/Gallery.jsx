@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Upload, X, ChevronLeft, ChevronRight, Download, Share2, Heart, Grid3x3, LayoutGrid, List, Filter, Loader } from 'lucide-react';
-import { CloudinaryContext } from 'cloudinary-react';
 import axios from 'axios';
 import UploadModal from '../components/UploadModal';
 
