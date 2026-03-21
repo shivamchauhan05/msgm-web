@@ -14,8 +14,6 @@ const Gallery = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showUploadModal, setShowUploadModal] = useState(false);
 
-  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-
   // Categories
   const categories = [
     { id: 'all', name: t('gallery.categories.all'), icon: <Grid3x3 size={16} /> },
@@ -80,183 +78,181 @@ const Gallery = () => {
   };
 
   return (
-    <CloudinaryContext cloudName={cloudName}>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-        {/* Hero Section */}
-        <div className="relative h-48 md:h-64 bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 overflow-hidden">
-          <div className="absolute inset-0 bg-black/30"></div>
-          <div className="absolute inset-0 flex items-center justify-center text-center px-4">
-            <div className="animate-fade-in">
-              <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 md:mb-4">
-                {t('gallery.title')}
-              </h1>
-              <p className="text-sm md:text-xl text-blue-200 max-w-2xl mx-auto">
-                {t('gallery.subtitle')}
-              </p>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Hero Section */}
+      <div className="relative h-48 md:h-64 bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 overflow-hidden">
+        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute inset-0 flex items-center justify-center text-center px-4">
+          <div className="animate-fade-in">
+            <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 md:mb-4">
+              {t('gallery.title')}
+            </h1>
+            <p className="text-sm md:text-xl text-blue-200 max-w-2xl mx-auto">
+              {t('gallery.subtitle')}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-3 sm:px-4 py-4 md:py-8">
+        {/* Category Filter */}
+        <div className="mb-6">
+          <div className="flex items-center space-x-2 overflow-x-auto pb-3 scrollbar-hide">
+            <Filter size={18} className="text-gray-500 flex-shrink-0" />
+            {categories.map(category => (
+              <button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.id)}
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all whitespace-nowrap flex items-center space-x-1 flex-shrink-0 ${
+                  selectedCategory === category.id
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'bg-white text-gray-700 hover:bg-gray-100 shadow-sm'
+                }`}
+              >
+                <span className="text-sm sm:text-base">{category.icon}</span>
+                <span>{category.name}</span>
+              </button>
+            ))}
           </div>
         </div>
 
-        <div className="container mx-auto px-3 sm:px-4 py-4 md:py-8">
-          {/* Category Filter */}
-          <div className="mb-6">
-            <div className="flex items-center space-x-2 overflow-x-auto pb-3 scrollbar-hide">
-              <Filter size={18} className="text-gray-500 flex-shrink-0" />
-              {categories.map(category => (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all whitespace-nowrap flex items-center space-x-1 flex-shrink-0 ${
-                    selectedCategory === category.id
-                      ? 'bg-blue-600 text-white shadow-lg'
-                      : 'bg-white text-gray-700 hover:bg-gray-100 shadow-sm'
-                  }`}
-                >
-                  <span className="text-sm sm:text-base">{category.icon}</span>
-                  <span>{category.name}</span>
-                </button>
-              ))}
-            </div>
+        {/* Controls Bar */}
+        <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 mb-6">
+          {/* Search Bar */}
+          <div className="relative flex-1 max-w-full sm:max-w-xs">
+            <input
+              type="text"
+              placeholder={t('gallery.search')}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+            />
+            <svg className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
           </div>
 
-          {/* Controls Bar */}
-          <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 mb-6">
-            {/* Search Bar */}
-            <div className="relative flex-1 max-w-full sm:max-w-xs">
-              <input
-                type="text"
-                placeholder={t('gallery.search')}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-              />
-              <svg className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-
-            <div className="flex items-center gap-2">
-              {/* View Mode Buttons */}
-              <div className="flex bg-white rounded-lg shadow-sm">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded-l-lg transition-colors ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'}`}
-                >
-                  <Grid3x3 size={18} />
-                </button>
-                <button
-                  onClick={() => setViewMode('masonry')}
-                  className={`p-2 transition-colors ${viewMode === 'masonry' ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'}`}
-                >
-                  <LayoutGrid size={18} />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-2 rounded-r-lg transition-colors ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'}`}
-                >
-                  <List size={18} />
-                </button>
-              </div>
-
-              {/* Upload Button */}
+          <div className="flex items-center gap-2">
+            {/* View Mode Buttons */}
+            <div className="flex bg-white rounded-lg shadow-sm">
               <button
-                onClick={() => setShowUploadModal(true)}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-3 sm:px-4 py-2 rounded-lg transition-all flex items-center space-x-2 text-sm sm:text-base"
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-l-lg transition-colors ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'}`}
               >
-                <Upload size={16} />
-                <span>{t('gallery.upload')}</span>
+                <Grid3x3 size={18} />
+              </button>
+              <button
+                onClick={() => setViewMode('masonry')}
+                className={`p-2 transition-colors ${viewMode === 'masonry' ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'}`}
+              >
+                <LayoutGrid size={18} />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-2 rounded-r-lg transition-colors ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'}`}
+              >
+                <List size={18} />
               </button>
             </div>
+
+            {/* Upload Button */}
+            <button
+              onClick={() => setShowUploadModal(true)}
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-3 sm:px-4 py-2 rounded-lg transition-all flex items-center space-x-2 text-sm sm:text-base"
+            >
+              <Upload size={16} />
+              <span>{t('gallery.upload')}</span>
+            </button>
           </div>
-
-          {/* Loading State */}
-          {loading && (
-            <div className="flex justify-center items-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-            </div>
-          )}
-
-          {/* Gallery Grid */}
-          {!loading && (
-            <>
-              {viewMode === 'grid' && (
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
-                  {filteredPhotos.map(photo => (
-                    <GalleryCard
-                      key={photo.id}
-                      photo={photo}
-                      onClick={() => openLightbox(photo)}
-                      onLike={() => handleLike(photo.id)}
-                    />
-                  ))}
-                </div>
-              )}
-
-              {viewMode === 'masonry' && (
-                <div className="columns-2 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-3 sm:gap-4">
-                  {filteredPhotos.map(photo => (
-                    <MasonryCard
-                      key={photo.id}
-                      photo={photo}
-                      onClick={() => openLightbox(photo)}
-                      onLike={() => handleLike(photo.id)}
-                    />
-                  ))}
-                </div>
-              )}
-
-              {viewMode === 'list' && (
-                <div className="space-y-3">
-                  {filteredPhotos.map(photo => (
-                    <ListCard
-                      key={photo.id}
-                      photo={photo}
-                      onClick={() => openLightbox(photo)}
-                      onLike={() => handleLike(photo.id)}
-                    />
-                  ))}
-                </div>
-              )}
-
-              {/* Empty State */}
-              {filteredPhotos.length === 0 && (
-                <div className="text-center py-16 md:py-20">
-                  <Image size={48} className="mx-auto text-gray-400 mb-4" />
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-700 mb-2">
-                    {t('gallery.noPhotos')}
-                  </h3>
-                  <p className="text-sm md:text-base text-gray-500">
-                    {t('gallery.noPhotosMessage')}
-                  </p>
-                </div>
-              )}
-            </>
-          )}
         </div>
 
-        {/* Lightbox Modal */}
-        {selectedPhoto && (
-          <LightboxModal
-            photo={selectedPhoto}
-            onClose={closeLightbox}
-            onPrev={() => navigateLightbox(-1)}
-            onNext={() => navigateLightbox(1)}
-            onLike={() => handleLike(selectedPhoto.id)}
-            t={t}
-          />
+        {/* Loading State */}
+        {loading && (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+          </div>
         )}
 
-        {/* Upload Modal */}
-        {showUploadModal && (
-          <UploadModal
-            onClose={() => setShowUploadModal(false)}
-            onUploadSuccess={handleUploadSuccess}
-            categories={categories.filter(cat => cat.id !== 'all')}
-            t={t}
-          />
+        {/* Gallery Grid */}
+        {!loading && (
+          <>
+            {viewMode === 'grid' && (
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+                {filteredPhotos.map(photo => (
+                  <GalleryCard
+                    key={photo.id}
+                    photo={photo}
+                    onClick={() => openLightbox(photo)}
+                    onLike={() => handleLike(photo.id)}
+                  />
+                ))}
+              </div>
+            )}
+
+            {viewMode === 'masonry' && (
+              <div className="columns-2 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-3 sm:gap-4">
+                {filteredPhotos.map(photo => (
+                  <MasonryCard
+                    key={photo.id}
+                    photo={photo}
+                    onClick={() => openLightbox(photo)}
+                    onLike={() => handleLike(photo.id)}
+                  />
+                ))}
+              </div>
+            )}
+
+            {viewMode === 'list' && (
+              <div className="space-y-3">
+                {filteredPhotos.map(photo => (
+                  <ListCard
+                    key={photo.id}
+                    photo={photo}
+                    onClick={() => openLightbox(photo)}
+                    onLike={() => handleLike(photo.id)}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Empty State */}
+            {filteredPhotos.length === 0 && (
+              <div className="text-center py-16 md:py-20">
+                <Image size={48} className="mx-auto text-gray-400 mb-4" />
+                <h3 className="text-lg md:text-xl font-semibold text-gray-700 mb-2">
+                  {t('gallery.noPhotos')}
+                </h3>
+                <p className="text-sm md:text-base text-gray-500">
+                  {t('gallery.noPhotosMessage')}
+                </p>
+              </div>
+            )}
+          </>
         )}
       </div>
-    </CloudinaryContext>
+
+      {/* Lightbox Modal */}
+      {selectedPhoto && (
+        <LightboxModal
+          photo={selectedPhoto}
+          onClose={closeLightbox}
+          onPrev={() => navigateLightbox(-1)}
+          onNext={() => navigateLightbox(1)}
+          onLike={() => handleLike(selectedPhoto.id)}
+          t={t}
+        />
+      )}
+
+      {/* Upload Modal */}
+      {showUploadModal && (
+        <UploadModal
+          onClose={() => setShowUploadModal(false)}
+          onUploadSuccess={handleUploadSuccess}
+          categories={categories.filter(cat => cat.id !== 'all')}
+          t={t}
+        />
+      )}
+    </div>
   );
 };
 
