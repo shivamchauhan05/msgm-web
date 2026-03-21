@@ -35,7 +35,7 @@ const Gallery = () => {
   const fetchPhotos = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:5000/gallery");
+      const response = await axios.get("https://msgm-web-1.onrender.com/gallery");
       const formattedPhotos = response.data.map((resource, index) => ({
         id: resource.public_id,
         publicId: resource.public_id,

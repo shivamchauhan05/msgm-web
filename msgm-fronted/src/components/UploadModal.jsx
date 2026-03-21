@@ -53,7 +53,7 @@ const UploadModal = ({ onClose, onUploadSuccess, categories, t }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/upload",
+        "https://msgm-web-1.onrender.com/upload",
         formData,
         {
           onUploadProgress: (progressEvent) => {
