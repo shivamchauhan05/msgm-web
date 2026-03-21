@@ -7,8 +7,16 @@ import { v2 as cloudinary } from "cloudinary";
 dotenv.config();
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+// Configure CORS to allow only msgm-web-1.vercel.app
+const corsOptions = {
+  origin: 'https://msgm-web-1.vercel.app', // Only allow this domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
+};
+
+app.use(cors(corsOptions)); // Apply CORS configuration
+app.use(express.json()); // To parse JSON bodies
+
 
 // Cloudinary config
 cloudinary.config({
