@@ -20,6 +20,7 @@ const Navbar = () => {
     { name: t('history'), path: '/history' },
     { name: t('staff'), path: '/staff' },
     { name: t('topStudents'), path: '/top-students' },
+     { name: 'Gallery', path: '/gallery' },
     { name: t('contact'), path: '/contact' },
   ];
 

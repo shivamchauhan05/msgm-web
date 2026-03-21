@@ -10,6 +10,7 @@ import History from './pages/History';
 import Staff from './pages/Staff';
 import TopStudents from './pages/TopStudents';
 import Contact from './pages/Contact';
+import Gallery from './pages/Gallery';
 
 function App() {
   useEffect(() => {
@@ -28,6 +29,7 @@ function App() {
             <Route path="/staff" element={<Staff />} />
             <Route path="/top-students" element={<TopStudents />} />
             <Route path="/contact" element={<Contact />} />
+             <Route path="/gallery" element={<Gallery />} />
           </Routes>
         </main>
         <Footer />

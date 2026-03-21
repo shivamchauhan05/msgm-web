@@ -11,7 +11,7 @@ const resources = {
       "staff": "Staff",
       "topStudents": "Top Students",
       "contact": "Contact",
-      
+      "gallery": "Gallery",
       // School Info
       "schoolName": "MSGM Inter College",
       "schoolLocation": "Kusmara, Mainpuri",
@@ -127,8 +127,29 @@ const resources = {
       "completeAddress": "Complete Address",
       "viewOnMap": "View on Google Map",
       "monSat": "Monday - Saturday",
-      "timing": "7:00 AM - 2:00 PM"
-    }
+      "timing": "7:00 AM - 2:00 PM",
+     "gallery": "gallery",
+      "gallery": {
+    "title": "Our Gallery",
+    "subtitle": "Memories and achievements of our school",
+    "search": "Search photos...",
+    "upload": "Upload",
+    "uploading": "Uploading...",
+    "selectCategory": "Select Category",
+    "noPhotos": "No photos found",
+    "noPhotosMessage": "Try different category or upload new photos",
+    "download": "Download",
+    "share": "Share",
+    "uploadError": "Upload failed. Please try again.",
+    "categories": {
+      "all": "All Photos",
+      "events": "Events",
+      "sports": "Sports",
+      "classroom": "Classroom",
+      "cultural": "Cultural",
+      "achievements": "Achievements",
+      "campus": "Campus"
+    }  }  }
   },
   hi: {
     translation: {
@@ -255,8 +276,34 @@ const resources = {
       "completeAddress": "पूरा पता",
       "viewOnMap": "गूगल मैप पर देखें",
       "monSat": "सोमवार - शनिवार",
-      "timing": "सुबह 7:00 - दोपहर 2:00"
+      "timing": "सुबह 7:00 - दोपहर 2:00",
+
+
+      "gallery": {
+    "title": "हमारी गैलरी",
+    "subtitle": "हमारे विद्यालय की यादें और उपलब्धियां",
+    "search": "फोटो खोजें...",
+    "upload": "अपलोड करें",
+    "uploading": "अपलोड हो रहा है...",
+    "selectCategory": "श्रेणी चुनें",
+    "noPhotos": "कोई फोटो नहीं मिली",
+    "noPhotosMessage": "अलग कैटेगरी चुनें या नई फोटो अपलोड करें",
+    "download": "डाउनलोड",
+    "share": "शेयर",
+    "uploadError": "अपलोड विफल हुआ। कृपया पुनः प्रयास करें।",
+    "categories": {
+      "all": "सभी फोटो",
+      "events": "कार्यक्रम",
+      "sports": "खेल",
+      "classroom": "कक्षा",
+      "cultural": "सांस्कृतिक",
+      "achievements": "उपलब्धियां",
+      "campus": "कैंपस"
     }
+  },
+  "common": {
+    "cancel": "रद्द करें"
+  }  }
   }
 };
 
