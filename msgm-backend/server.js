@@ -1,94 +1,60 @@
 import express from "express";
-import multer from "multer";
 import cors from "cors";
 import dotenv from "dotenv";
-import { v2 as cloudinary } from "cloudinary";
+import mongoose from "mongoose";
+import galleryRoutes from "./routes/galleryRoutes.js";
 
 dotenv.config();
 
 const app = express();
-// Configure CORS to allow only msgm-web-1.vercel.app
+const PORT = process.env.PORT || 5000;
+
+// CORS configuration
 const corsOptions = {
-  origin: 'https://msgm-web-1.vercel.app', // Only allow this domain
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
+  origin: ['https://msgm-web-1.vercel.app', 'http://localhost:5173', 'http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
 };
 
-app.use(cors(corsOptions)); // Apply CORS configuration
-app.use(express.json()); // To parse JSON bodies
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('✅ MongoDB connected successfully'))
+  .catch(err => console.error('❌ MongoDB connection error:', err));
 
-// Cloudinary config
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+// Routes
+app.use("/api", galleryRoutes);
+
+// Health check
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Gallery API is running",
+    endpoints: {
+      upload: "POST /api/upload",
+      gallery: "GET /api/gallery",
+      stats: "GET /api/gallery/stats",
+      like: "POST /api/gallery/:id/like",
+      debug: "GET /api/gallery/debug",
+    },
+  });
 });
 
-// multer setup
-const storage = multer.diskStorage({});
-const upload = multer({
-  storage,
-  limits: { fileSize: 10 * 1024 * 1024 }
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    success: false,
+    error: err.message || "Something went wrong!",
+  });
 });
 
-// Multiple image upload
-app.post("/upload", upload.array("images", 10), async (req, res) => {
-  try {
-        console.log("Received files:", req.files);
-    const files = req.files;
-
-    const uploadedImages = [];
-
-    for (const file of files) {
-      const result = await cloudinary.uploader.upload(file.path, {
-        folder: "school-gallery",
-      });
-     console.log("Upload result:", result);
-      uploadedImages.push({
-        public_id: result.public_id,
-        url: result.secure_url,
-        width: result.width,
-        height: result.height,
-        created_at: result.created_at,
-      });
-    }
-
-    res.json({
-      message: "Images uploaded successfully",
-      images: uploadedImages,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Upload failed" });
-  }
-});
-
-// Fetch gallery images
-app.get("/gallery", async (req, res) => {
-  try {
-    const result = await cloudinary.search
-      .expression('asset_folder="school_gallery"')
-      .sort_by("created_at", "desc")
-      .max_results(100)
-      .execute();
-
-    console.log("Gallery fetch result:", result);
-    res.json(result.resources);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json(error);
-  }
-});
-app.get("/cloudinary-test", async (req, res) => {
-  try {
-    const result = await cloudinary.api.ping();
-    res.json(result);
-  } catch (error) {
-    res.json(error);
-  }
-});
-const PORT = process.env.PORT || 5000;
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`📁 API URL: http://localhost:${PORT}/api`);
+  console.log(`📊 MongoDB: ${process.env.MONGODB_URI}`);
 });

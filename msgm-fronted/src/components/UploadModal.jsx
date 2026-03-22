@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Upload, Image, ChevronDown, Loader, Trash2 } from 'lucide-react';
+import { X, Upload, Image, ChevronDown, Loader, Trash2, Folder, Tag } from 'lucide-react';
 import axios from 'axios';
 
 const UploadModal = ({ onClose, onUploadSuccess, categories, t }) => {
@@ -8,6 +8,9 @@ const UploadModal = ({ onClose, onUploadSuccess, categories, t }) => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [category, setCategory] = useState(categories[0]?.id || 'events');
   const [previewUrls, setPreviewUrls] = useState([]);
+  const [uploadStatus, setUploadStatus] = useState('');
+
+  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
   // Handle file selection
   const handleFileSelect = (event) => {
@@ -17,6 +20,8 @@ const UploadModal = ({ onClose, onUploadSuccess, categories, t }) => {
     // Create preview URLs for new files
     const newUrls = files.map(file => URL.createObjectURL(file));
     setPreviewUrls(prev => [...prev, ...newUrls]);
+    
+    setUploadStatus(`${selectedFiles.length + files.length} photos selected`);
   };
 
   // Remove a file from selection
@@ -24,7 +29,6 @@ const UploadModal = ({ onClose, onUploadSuccess, categories, t }) => {
     const newFiles = [...selectedFiles];
     const newUrls = [...previewUrls];
     
-    // Revoke the object URL to avoid memory leaks
     URL.revokeObjectURL(newUrls[index]);
     
     newFiles.splice(index, 1);
@@ -32,65 +36,96 @@ const UploadModal = ({ onClose, onUploadSuccess, categories, t }) => {
     
     setSelectedFiles(newFiles);
     setPreviewUrls(newUrls);
+    setUploadStatus(`${newFiles.length} photos selected`);
+  };
+
+  // Clear all files
+  const clearAllFiles = () => {
+    previewUrls.forEach(url => URL.revokeObjectURL(url));
+    setSelectedFiles([]);
+    setPreviewUrls([]);
+    setUploadStatus('');
   };
 
   // Handle upload
   const handleUpload = async () => {
-    if (selectedFiles.length === 0) return;
+    if (selectedFiles.length === 0) {
+      setUploadStatus('Please select photos first');
+      return;
+    }
 
     setUploading(true);
     setUploadProgress(0);
+    setUploadStatus('Uploading photos...');
 
     const formData = new FormData();
     
-    // Append all files
     selectedFiles.forEach(file => {
       formData.append("images", file);
     });
     
-    // Append category
+    // ✅ Send category to backend
     formData.append("category", category);
+    formData.append("title", `${category} gallery photos`);
+    formData.append("description", `Uploaded to ${category} category`);
 
     try {
-      const response = await axios.post(
-        "https://msgm-web-1.onrender.com/upload",
-        formData,
-        {
-          onUploadProgress: (progressEvent) => {
-            const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-            setUploadProgress(percentCompleted);
-          }
+      const response = await axios.post(`${API_BASE}/upload`, formData, {
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(percentCompleted);
+          setUploadStatus(`Uploading: ${percentCompleted}%`);
         }
-      );
+      });
 
-      // Format the new photos
-      const newPhotos = response.data.images.map((img, idx) => ({
-        id: img.public_id,
-        publicId: img.public_id,
-        url: img.url,
-        thumbnail: img.url.replace('/upload/', '/upload/c_thumb,w_400/'),
-        title: `${category} photo ${new Date().toLocaleDateString()}`,
-        category: category,
-        date: img.created_at,
-        width: img.width,
-        height: img.height,
-        likes: 0,
-      }));
+      if (response.data.success) {
+        setUploadStatus(`Success! ${response.data.images.length} photos uploaded to ${category}`);
+        
+        // Format new photos
+        const newPhotos = response.data.images.map((img) => ({
+          id: img.id || img.public_id,
+          publicId: img.public_id,
+          url: img.url,
+          thumbnail: img.thumbnail,
+          title: img.title || `${category} photo`,
+          category: category,
+          date: img.date || new Date().toISOString(),
+          width: img.width,
+          height: img.height,
+          likes: 0,
+        }));
 
-      // Call the success callback
-      onUploadSuccess(newPhotos);
-      
-      // Clean up preview URLs
-      previewUrls.forEach(url => URL.revokeObjectURL(url));
-      
-      // Close modal
-      onClose();
+        onUploadSuccess(newPhotos);
+        
+        // Clean up preview URLs
+        previewUrls.forEach(url => URL.revokeObjectURL(url));
+        
+        // Close modal after delay
+        setTimeout(() => {
+          onClose();
+        }, 1500);
+      }
     } catch (error) {
       console.error("Upload failed:", error);
-      alert(t('gallery.uploadError'));
+      setUploadStatus('Upload failed: ' + (error.response?.data?.error || error.message));
+      setTimeout(() => {
+        setUploadStatus('');
+      }, 3000);
     }
 
     setUploading(false);
+  };
+
+  const getCategoryIcon = (catId) => {
+    const icons = {
+      events: '🎉',
+      sports: '⚽',
+      classroom: '📚',
+      cultural: '🎭',
+      achievements: '🏆',
+      campus: '🏫'
+    };
+    return icons[catId] || '📁';
   };
 
   return (
@@ -100,7 +135,7 @@ const UploadModal = ({ onClose, onUploadSuccess, categories, t }) => {
         <div className="sticky top-0 bg-white z-10 flex justify-between items-center p-4 sm:p-6 border-b">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-800 flex items-center">
             <Upload className="mr-2 text-blue-600" size={20} />
-            {t('gallery.uploadPhotos')}
+            {t('gallery.uploadPhotos') || 'Upload Photos'}
           </h2>
           <button
             onClick={onClose}
@@ -116,11 +151,11 @@ const UploadModal = ({ onClose, onUploadSuccess, categories, t }) => {
           {/* File Input */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('gallery.selectPhotos')}
+              {t('gallery.selectPhotos') || 'Select Photos'}
             </label>
             <div 
               className="border-2 border-dashed border-gray-300 rounded-lg p-6 sm:p-8 text-center hover:border-blue-500 transition-colors cursor-pointer bg-gray-50"
-              onClick={() => document.getElementById('file-input').click()}
+              onClick={() => !uploading && document.getElementById('file-input').click()}
             >
               <input
                 id="file-input"
@@ -133,10 +168,10 @@ const UploadModal = ({ onClose, onUploadSuccess, categories, t }) => {
               />
               <Image size={40} className="mx-auto text-gray-400 mb-3" />
               <p className="text-gray-600 mb-1 text-sm sm:text-base">
-                {t('gallery.clickToSelect')}
+                {t('gallery.clickToSelect') || 'Click to select photos'}
               </p>
               <p className="text-xs sm:text-sm text-gray-500">
-                {t('gallery.multiplePhotos')}
+                {t('gallery.multiplePhotos') || 'You can select multiple photos'}
               </p>
             </div>
           </div>
@@ -144,9 +179,18 @@ const UploadModal = ({ onClose, onUploadSuccess, categories, t }) => {
           {/* Preview Grid */}
           {previewUrls.length > 0 && (
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('gallery.selectedPhotos')} ({previewUrls.length})
-              </label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  {t('gallery.selectedPhotos') || 'Selected Photos'} ({previewUrls.length})
+                </label>
+                <button
+                  onClick={clearAllFiles}
+                  className="text-xs text-red-500 hover:text-red-700"
+                  disabled={uploading}
+                >
+                  Clear all
+                </button>
+              </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 max-h-60 overflow-y-auto p-1">
                 {previewUrls.map((url, index) => (
                   <div key={index} className="relative group">
@@ -170,8 +214,10 @@ const UploadModal = ({ onClose, onUploadSuccess, categories, t }) => {
 
           {/* Category Selection */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('gallery.selectCategory')}
+            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <Tag size={16} className="mr-1" />
+              {t('gallery.selectCategory') || 'Select Category'} 
+              <span className="ml-1 text-red-500">*</span>
             </label>
             <div className="relative">
               <select
@@ -182,23 +228,51 @@ const UploadModal = ({ onClose, onUploadSuccess, categories, t }) => {
               >
                 {categories.map(cat => (
                   <option key={cat.id} value={cat.id}>
-                    {cat.name}
+                    {getCategoryIcon(cat.id)} {cat.name}
                   </option>
                 ))}
               </select>
               <ChevronDown className="absolute right-3 top-3 text-gray-400" size={20} />
             </div>
+            <p className="text-xs text-gray-500 mt-1">
+              Photos will be stored in {category} category
+            </p>
           </div>
+
+          {/* Category Info */}
+          {selectedFiles.length > 0 && (
+            <div className="mb-6 p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="flex items-center space-x-2">
+                <Folder size={16} className="text-blue-600" />
+                <span className="text-sm text-blue-800">
+                  {selectedFiles.length} photo(s) will be uploaded to:
+                </span>
+                <span className="font-semibold text-blue-900">
+                  {categories.find(c => c.id === category)?.name || category}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Upload Status */}
+          {uploadStatus && (
+            <div className={`mb-6 p-3 rounded-lg ${
+              uploadStatus.includes('Success') 
+                ? 'bg-green-50 border border-green-200 text-green-700'
+                : uploadStatus.includes('failed')
+                ? 'bg-red-50 border border-red-200 text-red-700'
+                : 'bg-blue-50 border border-blue-200 text-blue-700'
+            }`}>
+              <div className="flex items-center space-x-2">
+                {uploading && <Loader className="animate-spin" size={16} />}
+                <span className="text-sm">{uploadStatus}</span>
+              </div>
+            </div>
+          )}
 
           {/* Progress Bar */}
           {uploading && (
             <div className="mb-6">
-              <div className="flex justify-between mb-2">
-                <span className="text-sm text-gray-600">
-                  {t('gallery.uploadingProgress')}
-                </span>
-                <span className="text-sm text-gray-600">{uploadProgress}%</span>
-              </div>
               <div className="w-full bg-gray-200 rounded-full h-2.5">
                 <div
                   className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
@@ -215,7 +289,7 @@ const UploadModal = ({ onClose, onUploadSuccess, categories, t }) => {
               className="px-4 sm:px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
               disabled={uploading}
             >
-              {t('cancel')}
+              {t('common.cancel') || 'Cancel'}
             </button>
             <button
               onClick={handleUpload}
@@ -229,12 +303,15 @@ const UploadModal = ({ onClose, onUploadSuccess, categories, t }) => {
               {uploading ? (
                 <>
                   <Loader className="animate-spin" size={18} />
-                  <span>{t('gallery.uploading')}</span>
+                  <span>{t('gallery.uploading') || 'Uploading...'}</span>
                 </>
               ) : (
                 <>
                   <Upload size={18} />
-                  <span>{t('gallery.upload')} ({selectedFiles.length})</span>
+                  <span>
+                    {t('gallery.upload') || 'Upload'} 
+                    {selectedFiles.length > 0 && ` (${selectedFiles.length})`}
+                  </span>
                 </>
               )}
             </button>
