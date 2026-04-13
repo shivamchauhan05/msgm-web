@@ -38,10 +38,10 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-white/90 backdrop-blur-xl shadow-lg border-b border-gray-100'
-            : 'bg-white/70 backdrop-blur-md border-b border-gray-100/50'
+            ? 'bg-white shadow-lg border-b border-gray-200'
+            : 'bg-white shadow-md'
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -140,7 +140,7 @@ const Navbar = () => {
 
           {/* Mobile Navigation (Slide from right) */}
           <div
-            className={`fixed top-0 right-0 h-full w-64 bg-white/95 backdrop-blur-xl shadow-2xl z-50 transform transition-transform duration-500 ease-in-out md:hidden ${
+            className={`fixed top-0 right-0 h-full w-64 bg-white shadow-2xl z-50 transform transition-transform duration-500 ease-in-out md:hidden ${
               isOpen ? 'translate-x-0' : 'translate-x-full'
             }`}
           >
@@ -174,7 +174,7 @@ const Navbar = () => {
           {/* Overlay for mobile menu */}
           {isOpen && (
             <div
-              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden animate-fadeIn"
+              className="fixed inset-0 bg-black/30 z-40 md:hidden animate-fadeIn"
               onClick={() => setIsOpen(false)}
             />
           )}
