@@ -4,13 +4,13 @@ import React from 'react';
 const staffMembers = [
   {
     id: 1,
-    name: 'Darmendar Kumar',
+    name: 'Dharmendra Kumar',
     designation: 'Director',
     qualification: 'M.A., B.Ed., 30+ years experience',
     description: 'Visionary leader with decades of experience in educational administration. Under his guidance, the institution has achieved numerous academic and co-curricular milestones.',
     badge: 'Director',
     badgeClass: 'bg-yellow-700',
-    photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&q=80',
+    photo:'saurav bhaiya.jfif'
   },
   {
     id: 2,
@@ -20,17 +20,17 @@ const staffMembers = [
     description: 'Expert in Hindi literature and pedagogy. Known for making language learning engaging and effective. Guides students for board exams with excellent results.',
     badge: 'Hindi Dept.',
     badgeClass: 'bg-orange-700',
-    photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&q=80',
+    photo:'surendar sir.jfif'
   },
   {
     id: 3,
-    name: 'Ashishwad Mishra',
+    name: 'Ashirhwad Mishra',
     designation: 'Chemistry teacher',
     qualification: 'M.Sc., B.Ed.',
     description: 'Specializes in organic and inorganic chemistry. Uses practical demonstrations to simplify complex concepts. Consistently produces top results in science stream.',
     badge: 'Science',
     badgeClass: 'bg-green-700',
-    photo: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=500&q=80',
+    photo:'Aarisbad sir.jfif'
   },
   {
     id: 4,
@@ -40,7 +40,7 @@ const staffMembers = [
     description: 'Manages all digital records, examination data, and administrative systems. Ensures smooth online processes and technical support for staff and students.',
     badge: 'Admin',
     badgeClass: 'bg-gray-700',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80',
+    photo:'ravi sir.jfif'
   },
   {
     id: 5,
@@ -50,7 +50,7 @@ const staffMembers = [
     description: 'Young and dynamic educator who connects well with students. Focuses on fundamentals and problem-solving skills for competitive exams.',
     badge: 'Science',
     badgeClass: 'bg-green-700',
-    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&q=80',
+    photo:'kuldeep.jfif'
   },
   {
     id: 6,
@@ -60,7 +60,7 @@ const staffMembers = [
     description: 'Deep knowledge of physical and human geography. Uses maps, models, and digital tools to make geography interactive and exam-oriented.',
     badge: 'Social Science',
     badgeClass: 'bg-teal-700',
-    photo: 'https://images.unsplash.com/photo-1556157382-97eda2f9e2bf?w=500&q=80',
+    photo:'subhas sir.jfif'
   },
   {
     id: 7,
@@ -70,7 +70,7 @@ const staffMembers = [
     description: 'Renowned for simplifying complex mathematical problems. Prepares students for board exams and competitive tests like JEE and Olympiads.',
     badge: 'Maths',
     badgeClass: 'bg-indigo-700',
-    photo: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=500&q=80',
+    photo:'prabhakar sir.jfif'
   },
   {
     id: 8,
@@ -80,7 +80,7 @@ const staffMembers = [
     description: 'Academic head with a student-centric approach. Oversees curriculum, discipline, and overall school development. A mentor to both students and teachers.',
     badge: 'Principal',
     badgeClass: 'bg-blue-700',
-    photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&q=80',
+    photo:'kamlesh sir.jfif'
   },
   {
     id: 9,
@@ -90,7 +90,7 @@ const staffMembers = [
     description: 'Passionate about life sciences. Uses charts, models, and virtual labs to teach botany and zoology. Excellent board exam track record.',
     badge: 'Science',
     badgeClass: 'bg-green-700',
-    photo: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=500&q=80',
+    photo:'shivam sir.jfif'
   },
   {
     id: 10,
@@ -100,7 +100,7 @@ const staffMembers = [
     description: 'Fosters language proficiency and communication skills. Known for her innovative grammar teaching methods and literature appreciation sessions.',
     badge: 'English',
     badgeClass: 'bg-pink-700',
-    photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&q=80',
+    photo:'suneeta mam.jfif'
   },
   {
     id: 11,
@@ -110,7 +110,7 @@ const staffMembers = [
     description: 'Develops physical fitness, sportsmanship, and team spirit. Trains school teams for district and state-level competitions.',
     badge: 'Sports',
     badgeClass: 'bg-red-700',
-    photo: 'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?w=500&q=80',
+    photo:'pti.jfif'
   },
   {
     id: 12,
@@ -120,7 +120,7 @@ const staffMembers = [
     description: 'Makes physics relatable through experiments and real-world applications. Guides students for competitive exams like NEET and JEE.',
     badge: 'Science',
     badgeClass: 'bg-green-700',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80',
+    photo:'tripati sir.jfif'
   },
   {
     id: 13,
@@ -130,17 +130,17 @@ const staffMembers = [
     description: 'Nurtures creativity and artistic expression. Prepares students for fine arts exams and encourages participation in cultural events.',
     badge: 'Arts',
     badgeClass: 'bg-purple-700',
-    photo: 'https://images.unsplash.com/photo-1544717305-38c914e2b6f5?w=500&q=80',
+    photo:"rajkishor sir.jfif"
   },
   {
-    id: 14,
-    name: 'Shubhash Sir',
-    designation: 'Geography Lecturer',
-    qualification: 'M.A. (Geography)',
-    description: 'Specialist in Indian and world geography. Uses modern teaching aids and fieldwork to enhance understanding of geographical concepts.',
-    badge: 'Social Science',
-    badgeClass: 'bg-teal-700',
-    photo: 'https://images.unsplash.com/photo-1556157382-97eda2f9e2bf?w=500&q=80',
+    id: 15,
+    name: 'Alkesh kumar',
+    designation: 'English Lecturer',
+    qualification: 'M.A. (English), B.Ed.',
+    description: 'Energetic and student-friendly approach to English literature and grammar. Focuses on spoken English and writing skills.',
+    badge: 'English',
+    badgeClass: 'bg-pink-700',
+    photo:'Alkesh sir.jfif'
   },
   {
     id: 15,
@@ -150,8 +150,15 @@ const staffMembers = [
     description: 'Energetic and student-friendly approach to English literature and grammar. Focuses on spoken English and writing skills.',
     badge: 'English',
     badgeClass: 'bg-pink-700',
-    photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&q=80',
+    photo:'happy sir.jfif'
   },
+  { id: 16, name: 'Kamlesh Yadav',
+     designation: 'Clerk (Lipik)',
+      qualification: 'Graduate', 
+      description: 'Responsible for maintaining school records, handling documentation, and managing daily administrative tasks efficiently. Ensures smooth office operations and proper record-keeping.',
+       badge: 'Office',
+        badgeClass: 'bg-green-700',
+         photo: 'kamlesh yadav.jfif' }
 ];
 
 // ========== STAFF CARD COMPONENT ==========
@@ -254,9 +261,9 @@ const Staff = () => {
 
       {/* Admin & Support Staff Section */}
       {adminStaff.length > 0 && (
-        <div className="max-w-5xl mx-auto mb-12">
+        <div className="max-w-5xl mx-auto mb-12 ">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
+            <div className="h-10px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
             <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 px-4">Administration & Support</h2>
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
           </div>

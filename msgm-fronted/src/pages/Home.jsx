@@ -66,6 +66,8 @@ const PhotoPopup = ({ photos, initialIndex, onClose }) => {
     return () => { document.body.style.overflow = ''; };
   }, []);
 
+  const currentPhoto = photos[current];
+
   return (
     <div
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-md px-4 sm:px-10 md:px-20 py-8 sm:py-12 animate-fadeIn"
@@ -75,32 +77,23 @@ const PhotoPopup = ({ photos, initialIndex, onClose }) => {
         className="relative w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl animate-popIn"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Image Container with Animation */}
         <div className="relative bg-black aspect-video">
           <img
             key={current}
-            src={photos[current].src}
-            alt={photos[current].label}
+            src={currentPhoto.src}
+            alt={currentPhoto.label}
             className="w-full h-full object-cover animate-fadeScale"
           />
-          
-          {/* Gradient Overlay for better text visibility */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-
-          {/* Top-right close button */}
           <button
             onClick={onClose}
             className="absolute top-4 right-4 bg-black/60 hover:bg-black/80 text-white rounded-full p-2.5 transition-all duration-300 hover:scale-110 hover:rotate-90 backdrop-blur-sm"
           >
             <X size={20} />
           </button>
-
-          {/* Slide counter badge */}
           <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full">
             {current + 1} / {photos.length}
           </div>
-
-          {/* Navigation Buttons */}
           {photos.length > 1 && (
             <>
               <button
@@ -118,12 +111,13 @@ const PhotoPopup = ({ photos, initialIndex, onClose }) => {
             </>
           )}
         </div>
-
-        {/* Footer with slide info and dots */}
-        <div className="bg-white/95 backdrop-blur-sm px-6 py-4 flex items-center justify-between gap-3 animate-slideUp">
-          <div>
-            <p className="font-semibold text-gray-800 text-base sm:text-lg">{photos[current].label}</p>
-            <p className="text-xs text-gray-500 mt-0.5">MSGM Inter College • Kusmara, Mainpuri</p>
+        <div className="bg-white/95 backdrop-blur-sm px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-slideUp">
+          <div className="flex-1">
+            <p className="font-semibold text-gray-800 text-base sm:text-lg">{currentPhoto.label}</p>
+            {currentPhoto.description && (
+              <p className="text-xs text-gray-600 mt-1">{currentPhoto.description}</p>
+            )}
+            <p className="text-xs text-gray-400 mt-0.5">MSGM Inter College • Kusmara, Mainpuri</p>
           </div>
           <div className="flex gap-2">
             {photos.map((_, i) => (
@@ -151,7 +145,7 @@ const PhotoPopup = ({ photos, initialIndex, onClose }) => {
 };
 
 /* ─────────────────────────────────────────────
-   HERO SLIDESHOW with enhanced animations
+   HERO SLIDESHOW with dynamic heading & subheading
 ───────────────────────────────────────────── */
 const SLIDE_DURATION = 5000;
 
@@ -185,9 +179,10 @@ const HeroSlideshow = ({ slides, onApply, onContact, onPhotoClick }) => {
     setProgress(0);
   };
 
+  const currentSlide = slides[active];
+
   return (
     <section className="relative h-[520px] sm:h-[680px] md:h-[820px] overflow-hidden bg-slate-900">
-      {/* Slides */}
       {slides.map((s, i) => (
         <div
           key={i}
@@ -199,33 +194,36 @@ const HeroSlideshow = ({ slides, onApply, onContact, onPhotoClick }) => {
           <img src={s.src} alt={s.label} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-          
-          {/* Hover Zoom Hint */}
           <div className="absolute bottom-6 right-6 bg-black/50 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none translate-y-2 group-hover:translate-y-0">
             <ZoomIn size={18} className="text-white" />
           </div>
         </div>
       ))}
 
-      {/* Content with staggered animations */}
       <div className="relative h-full flex items-center pointer-events-none">
         <div className="container mx-auto px-5 sm:px-10">
           <div className="max-w-xl text-white pointer-events-auto animate-slideUp">
-            {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-yellow-500 text-blue-900 text-xs sm:text-sm font-bold px-4 py-2 rounded-full mb-5 shadow-lg animate-fadeIn">
               <GraduationCap size={16} className="animate-bounce-subtle" />
               <span>Est. 1984 • U.P. Board Affiliated</span>
             </div>
 
+            {/* Dynamic Heading */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 animate-slideRight">
-              {t('welcome')}
+              {currentSlide.heading}
             </h1>
 
-            <p className="text-sm sm:text-base md:text-lg text-white/85 mb-8 leading-relaxed animate-slideRight animation-delay-100">
-              {t('schoolTagline')}
+            {/* Dynamic Subheading */}
+            <p className="text-sm sm:text-base md:text-lg text-white/85 mb-4 leading-relaxed animate-slideRight animation-delay-100">
+              {currentSlide.subheading}
             </p>
 
-            {/* Buttons */}
+            {currentSlide.caption && (
+              <div className="mb-6 animate-fadeIn bg-black/30 backdrop-blur-sm rounded-lg p-3 inline-block">
+                <p className="text-yellow-300 text-sm sm:text-base font-medium">{currentSlide.caption}</p>
+              </div>
+            )}
+
             <div className="flex flex-col sm:flex-row gap-3 animate-slideUp animation-delay-200">
               <button
                 onClick={onApply}
@@ -243,7 +241,6 @@ const HeroSlideshow = ({ slides, onApply, onContact, onPhotoClick }) => {
               </button>
             </div>
 
-            {/* Stats with staggered fade-in */}
             <div className="flex flex-wrap gap-6 sm:gap-10 mt-9">
               {[
                 { val: '40+', label: t('yearsOfExcellence'), delay: 300 },
@@ -264,7 +261,6 @@ const HeroSlideshow = ({ slides, onApply, onContact, onPhotoClick }) => {
         </div>
       </div>
 
-      {/* Dot navigation */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10 pointer-events-auto">
         {slides.map((_, i) => (
           <button
@@ -279,23 +275,19 @@ const HeroSlideshow = ({ slides, onApply, onContact, onPhotoClick }) => {
         ))}
       </div>
 
-      {/* Progress bar */}
       <div
         className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-yellow-400 to-yellow-500 transition-none z-10"
         style={{ width: `${progress}%` }}
       />
 
-      {/* Slide counter */}
       <div className="absolute top-5 right-5 bg-black/50 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full z-10 pointer-events-auto animate-fadeIn">
         {active + 1} / {slides.length}
       </div>
 
-      {/* Click hint */}
       <div className="absolute bottom-24 right-5 bg-black/50 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full z-10 pointer-events-none animate-pulse-subtle">
         <ZoomIn size={12} className="inline mr-1" /> Click photo to enlarge
       </div>
 
-      {/* Wave Divider */}
       <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" className="w-full">
           <path fill="#f9fafb" fillOpacity="1" d="M0,40L60,48C120,56,240,72,360,72C480,72,600,56,720,50C840,44,960,50,1080,54C1200,58,1320,60,1380,61L1440,62L1440,100L1380,100C1320,100,1200,100,1080,100C960,100,840,100,720,100C600,100,480,100,360,100C240,100,120,100,60,100L0,100Z" />
@@ -306,7 +298,7 @@ const HeroSlideshow = ({ slides, onApply, onContact, onPhotoClick }) => {
 };
 
 /* ─────────────────────────────────────────────
-   CAMPUS PHOTO STRIP with hover animations
+   CAMPUS PHOTO STRIP
 ───────────────────────────────────────────── */
 const CampusStrip = ({ photos, onPhotoClick }) => {
   const { t } = useTranslation();
@@ -354,28 +346,91 @@ const Home = () => {
 
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupIndex, setPopupIndex] = useState(0);
+  const [popupPhotos, setPopupPhotos] = useState([]);
 
-  const heroSlides = [
-    { src: 'msgm.jpeg', label: 'MSGM Inter College - Main Building' },
-    { src: 'game2.jfif', label: 'Beautiful Campus View' },
-    { src: 'game.jfif', label: 'Sports Activities' },
-    { src: 'game3.jfif', label: 'Library & Study Area' },
-    { src: 'game1.jfif', label: 'Playground & Sports Complex' },
-  ];
-
-  const campusPhotos = [
-    { src: 'game4.jfif', label: 'Student Activity - Cultural Event' },
-    { src: 'game.jfif', label: 'Sports - Annual Sports Day' },
-    { src: 'game2.jfif', label: 'Main Campus - Academic Block' },
-    { src: 'game3.jfif', label: 'Library - Reading Room' },
-    { src: 'game1.jfif', label: 'Playground - Cricket Ground' },
-  ];
-
-  const openPopup = (i) => { 
-    setPopupIndex(i); 
-    setPopupOpen(true); 
+  const openPopup = (photosArray, index) => {
+    setPopupPhotos(photosArray);
+    setPopupIndex(index);
+    setPopupOpen(true);
   };
   const closePopup = () => setPopupOpen(false);
+
+  // Hero slides with unique headings, subheadings, and captions
+  const heroSlides = [
+    { 
+      src:'msgm.jpeg',
+      label: 'Main Building - MSGM Inter College',
+      heading: 'Welcome to MSGM Inter College',
+      subheading: 'उत्कृष्टता का केंद्र • Centre of Excellence',
+      caption: '🎓 Excellence in Education Since 1984',
+      description: 'Our iconic main building houses state-of-the-art classrooms and administrative offices.'
+    },
+    { 
+      
+       src:'game4.jfif',
+      label: 'Digital Library & Reading Room',
+      heading: 'Knowledge Beyond Books',
+      subheading: 'Digital Library with 5000+ Resources',
+      caption: '📚 Read, Learn, Grow',
+      description: 'A quiet place for students to explore knowledge with modern digital tools.'
+    },
+    { 
+      src:'hero 5.jfif',
+      label: 'Annual Sports Meet',
+      heading: 'Champions Are Made Here',
+      subheading: 'Sports • Fitness • Team Spirit',
+      caption: '🏆 Play, Compete, Excel',
+      description: 'Students participating in athletics, cricket, football, and more.'
+    },
+    { 
+      src:'hero 4.jfif',
+      label: 'Science Laboratory',
+      heading: 'Where Curiosity Meets Discovery',
+      subheading: 'Hands-on Learning in Modern Labs',
+      caption: '🔬 Experiment • Innovate • Succeed',
+      description: 'Fully equipped physics, chemistry, and biology labs for practical education.'
+    },
+    { 
+      src:'hero 2.jfif',
+      label: 'Cultural Festival',
+      heading: 'Celebrate Diversity & Talent',
+      subheading: 'Art • Music • Dance • Drama',
+      caption: '🎭 Express Yourself',
+      description: 'Annual cultural fest showcasing student creativity and performances.'
+    },
+  ];
+
+  // Campus strip photos (distinct from hero)
+  
+
+  // Gallery photos (sports & events - distinct from above)
+  const galleryPhotos = [
+    { 
+      src:'game.jfif',
+      label: 'Cricket Match',
+      description: 'Inter-school cricket tournament at our ground.'
+    },
+    { 
+      src:'game1.jfif',
+      label: 'Football Practice',
+      description: 'Students training under professional coach.'
+    },
+    { 
+      src:'game2.jfif',
+      label: 'Athletics Meet',
+      description: 'Annual sports day – 100m, 200m, and relay races.'
+    },
+    { 
+      src:'game3.jfif',
+      label: 'Yoga & Meditation',
+      description: 'Daily wellness sessions for students.'
+    },
+    { 
+      src:'hero 5.jfif',
+      label: 'Chess Competition',
+      description: 'Developing strategic thinking through chess.'
+    },
+  ];
 
   const achievements = [
     { icon: <Trophy size={30} />, value: '40+', label: t('yearsOfExcellence'), sublabel: '1984 से', bg: 'bg-yellow-50', text: 'text-yellow-600' },
@@ -416,10 +471,9 @@ const Home = () => {
         slides={heroSlides}
         onApply={() => navigate('/admission')}
         onContact={() => navigate('/contact')}
-        onPhotoClick={openPopup}
+        onPhotoClick={(index) => openPopup(heroSlides, index)}
       />
 
-      <CampusStrip photos={campusPhotos} onPhotoClick={openPopup} />
 
       {/* Achievements Section */}
       <section className="py-14 sm:py-16 bg-gray-50">
@@ -533,10 +587,10 @@ const Home = () => {
             </div>
             <div
               className="relative rounded-2xl overflow-hidden shadow-2xl cursor-pointer group animate-fadeIn"
-              onClick={() => openPopup(2)}
+              onClick={() => openPopup(galleryPhotos, 0)}
             >
               <img
-                src="b7649345-dd48-404d-817f-9bf01e33ffc3.jfif"
+              src='b7649345-dd48-404d-817f-9bf01e33ffc3.jfif'
                 alt="Why Choose Us"
                 className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
               />
@@ -604,7 +658,7 @@ const Home = () => {
               />
             </div>
             <div className="text-white order-1 md:order-2 animate-slideLeft">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Dr. Arun Acharya</h2>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Shri Arun Acharya</h2>
               <p className="text-sm sm:text-base md:text-lg text-blue-100 leading-relaxed mb-6">{t('principalQuote')}</p>
               <div className="flex items-center gap-4">
                 <div className="w-10 h-0.5 bg-yellow-400" />
@@ -658,12 +712,12 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Gallery */}
+      {/* Gallery Section - Sports & Events */}
       <section className="py-14 sm:py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
             <span className="text-blue-600 font-semibold text-xs sm:text-sm uppercase tracking-widest animate-fadeIn">
-              {t('gallery')}
+             
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mt-2 animate-slideUp">
               {t('campusLife')}
@@ -672,32 +726,27 @@ const Home = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             <div
               className="col-span-2 row-span-2 cursor-pointer group relative overflow-hidden rounded-2xl animate-fadeIn"
-              onClick={() => openPopup(2)}
+              onClick={() => openPopup(galleryPhotos, 0)}
             >
               <img 
-                src="game2.jfif" 
-                alt="Campus" 
+                src={galleryPhotos[0].src} 
+                alt={galleryPhotos[0].label} 
                 className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 min-h-[200px] sm:min-h-[280px]" 
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-500 flex items-center justify-center">
                 <ZoomIn size={40} className="text-white opacity-0 group-hover:opacity-100 transition-all duration-500 transform scale-50 group-hover:scale-100" />
               </div>
             </div>
-            {[
-              { src: 'game4.jfif', idx: 0 },
-              { src: 'game.jfif', idx: 1 },
-              { src: 'game3.jfif', idx: 3 },
-              { src: 'game1.jfif', idx: 4 },
-            ].map((g, i) => (
+            {galleryPhotos.slice(1).map((photo, idx) => (
               <div
-                key={i}
+                key={idx}
                 className="cursor-pointer group relative overflow-hidden rounded-2xl animate-fadeIn"
-                style={{ animationDelay: `${(i + 1) * 100}ms`, animationFillMode: 'both' }}
-                onClick={() => openPopup(g.idx)}
+                style={{ animationDelay: `${(idx + 1) * 100}ms`, animationFillMode: 'both' }}
+                onClick={() => openPopup(galleryPhotos, idx + 1)}
               >
                 <img 
-                  src={g.src} 
-                  alt="" 
+                  src={photo.src} 
+                  alt={photo.label} 
                   className="w-full h-32 sm:h-40 object-cover transition-all duration-700 group-hover:scale-110" 
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-500 flex items-center justify-center">
@@ -730,105 +779,62 @@ const Home = () => {
 
       {popupOpen && (
         <PhotoPopup
-          photos={campusPhotos}
+          photos={popupPhotos}
           initialIndex={popupIndex}
           onClose={closePopup}
         />
       )}
 
-      {/* Custom Animations */}
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; }
           to { opacity: 1; }
         }
-        
         @keyframes popIn {
-          from { 
-            opacity: 0; 
-            transform: scale(0.88) translateY(20px);
-          }
-          to { 
-            opacity: 1; 
-            transform: scale(1) translateY(0);
-          }
+          from { opacity: 0; transform: scale(0.88) translateY(20px); }
+          to { opacity: 1; transform: scale(1) translateY(0); }
         }
-        
         @keyframes fadeScale {
-          from { 
-            opacity: 0.5; 
-            transform: scale(1.05);
-          }
-          to { 
-            opacity: 1; 
-            transform: scale(1);
-          }
+          from { opacity: 0.5; transform: scale(1.05); }
+          to { opacity: 1; transform: scale(1); }
         }
-        
         @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-        
         @keyframes slideRight {
-          from {
-            opacity: 0;
-            transform: translateX(-30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
+          from { opacity: 0; transform: translateX(-30px); }
+          to { opacity: 1; transform: translateX(0); }
         }
-        
         @keyframes slideLeft {
-          from {
-            opacity: 0;
-            transform: translateX(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
+          from { opacity: 0; transform: translateX(30px); }
+          to { opacity: 1; transform: translateX(0); }
         }
-        
         @keyframes bounceSubtle {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-5px); }
         }
-        
         @keyframes pulseSubtle {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.7; }
         }
-        
         @keyframes pingSlow {
           0% { transform: scale(1); opacity: 0.2; }
           50% { transform: scale(1.2); opacity: 0.1; }
           100% { transform: scale(1); opacity: 0.2; }
         }
-        
         @keyframes pulseSlow {
           0%, 100% { transform: scale(1); opacity: 0.1; }
           50% { transform: scale(1.1); opacity: 0.15; }
         }
-        
         @keyframes countUp {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        
         @keyframes scale {
           from { transform: scale(0); }
           to { transform: scale(1); }
         }
-        
         .animate-fadeIn { animation: fadeIn 0.5s ease forwards; }
         .animate-popIn { animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
         .animate-fadeScale { animation: fadeScale 0.3s ease-out forwards; }
@@ -841,13 +847,11 @@ const Home = () => {
         .animate-pulse-slow { animation: pulseSlow 4s ease-in-out infinite; }
         .animate-count-up { animation: countUp 0.8s ease-out forwards; }
         .animate-scale { animation: scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-        
         .animation-delay-100 { animation-delay: 100ms; }
         .animation-delay-200 { animation-delay: 200ms; }
         .animation-delay-300 { animation-delay: 300ms; }
         .animation-delay-400 { animation-delay: 400ms; }
         .animation-delay-500 { animation-delay: 500ms; }
-        
         .hover\\:translate-y-\\[-2px\\]:hover { transform: translateY(-2px); }
       `}</style>
     </div>
