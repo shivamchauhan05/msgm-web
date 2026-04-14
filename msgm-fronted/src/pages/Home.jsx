@@ -182,7 +182,7 @@ const HeroSlideshow = ({ slides, onApply, onContact, onPhotoClick }) => {
   const currentSlide = slides[active];
 
   return (
-    <section className="relative h-[520px] sm:h-[680px] md:h-[820px] overflow-hidden bg-slate-900">
+    <section className="relative h-[520px] sm:h-[600px] md:h-[820px] overflow-hidden bg-slate-900">
       {slides.map((s, i) => (
         <div
           key={i}
@@ -191,7 +191,7 @@ const HeroSlideshow = ({ slides, onApply, onContact, onPhotoClick }) => {
           }`}
           onClick={() => onPhotoClick(i)}
         >
-          <img src={s.src} alt={s.label} className="w-full h-full object-cover" />
+          <img src={s.src} alt={s.label} className="w-full h-full object-contain sm:object-cover bg-black" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
           <div className="absolute bottom-6 right-6 bg-black/50 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none translate-y-2 group-hover:translate-y-0">
